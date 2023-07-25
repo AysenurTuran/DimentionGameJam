@@ -27,7 +27,7 @@ public class Rewind : MonoBehaviour
 
     private void Record()
     {
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Recordable")) // Recordable etiketiyle iþaretlenmiþ nesneleri gezin
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Recordable"))
         {
             if (!rewindDataDict.ContainsKey(obj))
                 rewindDataDict[obj] = new List<RewindObjectData>();
@@ -67,5 +67,10 @@ public class Rewind : MonoBehaviour
     private void StopRewind()
     {
         isRewinding = false;
+        // Clear all the recorded data when stopping rewind
+        foreach (var kvp in rewindDataDict)
+        {
+            kvp.Value.Clear();
+        }
     }
 }
