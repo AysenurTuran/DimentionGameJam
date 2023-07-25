@@ -5,9 +5,11 @@ public class Rewind : MonoBehaviour
 {
     private Dictionary<GameObject, List<RewindObjectData>> rewindDataDict = new Dictionary<GameObject, List<RewindObjectData>>();
     private bool isRewinding = false;
+    private float recordDuration = 2f; // Kaydedilecek süre (2 saniye)
 
     private class RewindObjectData
     {
+        public float time; // Zaman damgasý
         public Vector2 position;
         public float rotation;
     }
@@ -20,7 +22,7 @@ public class Rewind : MonoBehaviour
             StopRewind();
 
         if (isRewinding)
-            Rewindm();
+            RewindM();
         else
             Record();
     }
@@ -34,15 +36,20 @@ public class Rewind : MonoBehaviour
 
             RewindObjectData data = new RewindObjectData
             {
+                time = Time.time, // Zaman damgasýný þu anki zamana ayarla
                 position = obj.transform.position,
                 rotation = obj.transform.rotation.eulerAngles.z
             };
 
             rewindDataDict[obj].Add(data);
+
+            // Son 2 saniyeden eski kayýtlarý temizle
+            float timeThreshold = Time.time - recordDuration;
+            rewindDataDict[obj].RemoveAll(d => d.time < timeThreshold);
         }
     }
 
-    private void Rewindm()
+    private void RewindM()
     {
         foreach (var kvp in rewindDataDict)
         {
@@ -67,10 +74,5 @@ public class Rewind : MonoBehaviour
     private void StopRewind()
     {
         isRewinding = false;
-        // Clear all the recorded data when stopping rewind
-        foreach (var kvp in rewindDataDict)
-        {
-            kvp.Value.Clear();
-        }
     }
 }
