@@ -10,6 +10,10 @@ public class Movement : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded;
 
+    spritechange Spritesc;
+
+
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -40,4 +44,15 @@ public class Movement : MonoBehaviour
             transform.localScale = new Vector3(1f, 1f, 1f);
         }
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag=="button")
+        {
+            Spritesc = collision.gameObject.GetComponent<spritechange>();
+            Spritesc.Basildi();
+        }
+    }
+    
+
+
 }
