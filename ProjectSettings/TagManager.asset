@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Recordable
   - button
+  - key
   layers:
   - Default
   - TransparentFX
